@@ -11,6 +11,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"gopkg.in/ini.v1"
 	"log"
 	"os"
 	"reflect"
@@ -184,6 +185,7 @@ func loadIniConfig(filename string, ic interface{}) error {
 }
 
 func main() {
+	// 1.自定义方式解析ini
 	var ic IniConfig
 
 	err := loadIniConfig("./etc/app.ini", &ic)
@@ -192,5 +194,22 @@ func main() {
 	}
 
 	fmt.Println(ic)
+
+	// 使用ini解析包go-ini=> go get gopkg.in/ini.v1
+	cfg, err := ini.Load("./etc/appmy.ini")
+	if err != nil {
+		fmt.Printf("Fail to read file: %v", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("App Mode:", cfg.Section("").Key("app_mode").String())
+	fmt.Println("Data Path:", cfg.Section("paths").Key("data").String())
+
+	fmt.Println(cfg.Section("db").Key("host").String())
+	db_port, _ := cfg.Section("db").Key("port").Int()
+	fmt.Println(db_port)
+
+	fmt.Println(cfg.Section("cache").Key("host").String())
+	fmt.Println(cfg.Section("cache").Key("port").String())
 
 }
