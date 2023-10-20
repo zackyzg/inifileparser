@@ -195,6 +195,7 @@ func main() {
 
 	fmt.Println(ic)
 
+	//=================================================//
 	// 使用ini解析包go-ini=> go get gopkg.in/ini.v1
 	cfg, err := ini.Load("./etc/appmy.ini")
 	if err != nil {
